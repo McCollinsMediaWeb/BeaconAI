@@ -7,37 +7,61 @@ import { ScrollTrigger } from "gsap/ScrollTrigger";
 import styles from "./TheGap.module.css";
 
 export default function TheGap() {
+  const sectionRef = useRef<HTMLDivElement>(null);
   const rightColRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    // Register the ScrollTrigger plugin on client mount
     gsap.registerPlugin(ScrollTrigger);
 
-    if (rightColRef.current) {
-      const elements = rightColRef.current.children;
+    const ctx = gsap.context(() => {
+      // 1. Staggered reveal for right-side text and stats content
+      if (rightColRef.current) {
+        const elements = rightColRef.current.children;
+        gsap.fromTo(
+          elements,
+          { opacity: 0, y: 30 },
+          {
+            opacity: 1,
+            y: 0,
+            duration: 0.8,
+            stagger: 0.15,
+            ease: "power2.out",
+            scrollTrigger: {
+              trigger: rightColRef.current,
+              start: "top 85%",
+              toggleActions: "play none none none",
+            },
+          }
+        );
+      }
 
-      // Animate child elements with a staggered reveal on scroll
-      gsap.fromTo(
-        elements,
-        { opacity: 0, y: 30 },
-        {
-          opacity: 1,
-          y: 0,
-          duration: 0.8,
-          stagger: 0.15,
-          ease: "power2.out",
-          scrollTrigger: {
-            trigger: rightColRef.current,
-            start: "top 85%", // Triggers when the top of the content is 85% down the viewport
-            toggleActions: "play none none none",
-          },
-        }
-      );
-    }
+      // 2. Line drawing reveal for layout dividers
+      if (sectionRef.current) {
+        const dividers = sectionRef.current.querySelectorAll(`.${styles.divider}`);
+        dividers.forEach((div) => {
+          gsap.fromTo(
+            div,
+            { scaleX: 0, transformOrigin: "left center" },
+            {
+              scaleX: 1,
+              duration: 1.5,
+              ease: "power2.out",
+              scrollTrigger: {
+                trigger: div,
+                start: "top 95%",
+                toggleActions: "play none none none",
+              },
+            }
+          );
+        });
+      }
+    }, sectionRef);
+
+    return () => ctx.revert();
   }, []);
 
   return (
-    <section className={styles.section}>
+    <section ref={sectionRef} className={styles.section}>
       <div className="container">
         {/* Scroll Down Line and Divider */}
         <div className={styles.scrollDownWrapper}>
@@ -49,7 +73,7 @@ export default function TheGap() {
 
         {/* Main Grid Content */}
         <div className={styles.mainGrid}>
-          {/* Left Column: Index & Category (Sticky Pinned on Scroll) */}
+          {/* Left Column: Index & Category */}
           <div className={styles.leftCol}>
             <div className={styles.leftHeader}>
               <span className={styles.indexNum}>(01)</span>
@@ -57,7 +81,7 @@ export default function TheGap() {
             </div>
           </div>
 
-          {/* Right Column: Title, Copy, Stats, Subcopy, Button (Revealed via ScrollTrigger) */}
+          {/* Right Column */}
           <div className={styles.rightCol}>
             <div ref={rightColRef} className={styles.rightContent}>
               {/* Heading */}

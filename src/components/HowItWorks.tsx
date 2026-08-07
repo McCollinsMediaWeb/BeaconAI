@@ -1,8 +1,63 @@
 "use client";
 
+import { useEffect, useRef } from "react";
 import styles from "./HowItWorks.module.css";
+import gsap from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
 
 export default function HowItWorks() {
+  const sectionRef = useRef<HTMLDivElement>(null);
+  const headerRef = useRef<HTMLDivElement>(null);
+  const stepsListRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    gsap.registerPlugin(ScrollTrigger);
+
+    const ctx = gsap.context(() => {
+      // 1. Reveal Header split columns
+      if (headerRef.current) {
+        gsap.fromTo(
+          [headerRef.current.querySelector(`.${styles.colTitle}`), headerRef.current.querySelector(`.${styles.colDesc}`)],
+          { opacity: 0, y: 30 },
+          {
+            opacity: 1,
+            y: 0,
+            duration: 0.8,
+            stagger: 0.15,
+            ease: "power2.out",
+            scrollTrigger: {
+              trigger: headerRef.current,
+              start: "top 85%",
+              toggleActions: "play none none none",
+            },
+          }
+        );
+      }
+
+      // 2. Reveal step rows in waterfall stagger sequence
+      if (stepsListRef.current) {
+        gsap.fromTo(
+          stepsListRef.current.children,
+          { opacity: 0, y: 40 },
+          {
+            opacity: 1,
+            y: 0,
+            duration: 1,
+            stagger: 0.15,
+            ease: "power3.out",
+            scrollTrigger: {
+              trigger: stepsListRef.current,
+              start: "top 85%",
+              toggleActions: "play none none none",
+            },
+          }
+        );
+      }
+    }, sectionRef);
+
+    return () => ctx.revert();
+  }, []);
+
   const steps = [
     {
       num: "01",
@@ -25,10 +80,10 @@ export default function HowItWorks() {
   ];
 
   return (
-    <section id="work" className={styles.section}>
+    <section ref={sectionRef} id="work" className={styles.section}>
       <div className="container howItWorkContainer">
-        {/* Header Section (Matching dual column layouts) */}
-        <div className={styles.headerGrid}>
+        {/* Header Section */}
+        <div ref={headerRef} className={styles.headerGrid}>
           {/* Label at the very top */}
           <div className={styles.fullWidthLabel}>
             <span className={styles.sectionLabel}>
@@ -55,7 +110,7 @@ export default function HowItWorks() {
         </div>
 
         {/* Steps List */}
-        <div className={styles.stepsList}>
+        <div ref={stepsListRef} className={styles.stepsList}>
           {steps.map((step) => (
             <div
               key={step.num}
@@ -82,7 +137,7 @@ export default function HowItWorks() {
                 </span>
               </div>
 
-              {/* Description (Supports <br /> rendering) */}
+              {/* Description */}
               <div className={styles.colStepDesc}>
                 <p
                   className={styles.stepDesc}

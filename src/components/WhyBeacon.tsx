@@ -1,8 +1,63 @@
 "use client";
 
+import { useEffect, useRef } from "react";
 import styles from "./WhyBeacon.module.css";
+import gsap from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
 
 export default function WhyBeacon() {
+  const sectionRef = useRef<HTMLDivElement>(null);
+  const headerRef = useRef<HTMLDivElement>(null);
+  const principlesListRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    gsap.registerPlugin(ScrollTrigger);
+
+    const ctx = gsap.context(() => {
+      // 1. Reveal Header split columns
+      if (headerRef.current) {
+        gsap.fromTo(
+          [headerRef.current.querySelector(`.${styles.colTitle}`), headerRef.current.querySelector(`.${styles.colDesc}`)],
+          { opacity: 0, y: 30 },
+          {
+            opacity: 1,
+            y: 0,
+            duration: 0.8,
+            stagger: 0.15,
+            ease: "power2.out",
+            scrollTrigger: {
+              trigger: headerRef.current,
+              start: "top 85%",
+              toggleActions: "play none none none",
+            },
+          }
+        );
+      }
+
+      // 2. Reveal Principles row items in waterfall stagger sequence
+      if (principlesListRef.current) {
+        gsap.fromTo(
+          principlesListRef.current.children,
+          { opacity: 0, y: 40 },
+          {
+            opacity: 1,
+            y: 0,
+            duration: 1,
+            stagger: 0.12,
+            ease: "power3.out",
+            scrollTrigger: {
+              trigger: principlesListRef.current,
+              start: "top 85%",
+              toggleActions: "play none none none",
+            },
+          }
+        );
+      }
+    }, sectionRef);
+
+    return () => ctx.revert();
+  }, []);
+
   const principles = [
     {
       num: "01",
@@ -32,10 +87,10 @@ export default function WhyBeacon() {
   ];
 
   return (
-    <section className={styles.section}>
+    <section ref={sectionRef} className={styles.section}>
       <div className="container">
-        {/* Header Grid (Matching dual column split) */}
-        <div className={styles.headerGrid}>
+        {/* Header Grid */}
+        <div ref={headerRef} className={styles.headerGrid}>
           {/* Label at the very top */}
           <div className={styles.fullWidthLabel}>
             <span className={styles.sectionLabel}>
@@ -62,7 +117,7 @@ export default function WhyBeacon() {
         </div>
 
         {/* Principles Table */}
-        <div className={styles.principlesList}>
+        <div ref={principlesListRef} className={styles.principlesList}>
           {principles.map((p) => (
             <div
               key={p.num}

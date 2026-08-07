@@ -1,7 +1,8 @@
 .section {
   background-color: rgba(238, 238, 238, 1);
-  padding-top: 80px;
-  padding-bottom: 6rem;
+  padding-top: 60px;
+  /* Removed on mobile */
+  padding-bottom: 3.5rem;
 }
 
 @media (min-width: 768px) {
@@ -16,7 +17,8 @@
   display: flex;
   flex-direction: column;
   gap: 1.5rem;
-  margin-bottom: 5.5rem;
+  margin-bottom: 2.5rem;
+  /* Reduced spacing on mobile viewports */
 }
 
 .leftCol {
@@ -32,6 +34,8 @@
     display: flex;
     flex-direction: row;
     gap: 3rem;
+    margin-bottom: 5.5rem;
+    /* Wide spacing on desktop viewports */
   }
 
   .leftCol {
@@ -45,12 +49,18 @@
     flex: 0 0 calc(65% - 1.5rem);
     padding-left: 2rem;
   }
+
+  .leftHeader {
+    gap: 4rem;
+    /* Restore wide gap on desktop viewports */
+  }
 }
 
 .leftHeader {
   display: flex;
   align-items: center;
-  gap: 4rem;
+  gap: 1.5rem;
+  /* Reduced gap on mobile viewports */
   font-family: var(--font-sans);
   font-size: clamp(12px, 0.9vw, 15px);
   font-weight: 500;
@@ -152,6 +162,17 @@
   user-select: none;
   overflow: hidden;
   z-index: 1;
+}
+
+.imageWrapper img,
+.imageWrapper video {
+  transition: transform 0.8s cubic-bezier(0.25, 1, 0.5, 1);
+}
+
+.card:hover .imageWrapper img,
+.card:hover .imageWrapper video {
+  transform: scale(1.06);
+  /* Clean layout zoom on hover */
 }
 
 /* Subtle dark overlay at the bottom to ensure high text contrast */

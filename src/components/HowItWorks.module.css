@@ -1,7 +1,7 @@
 .section {
   background-color: var(--bg-dark);
-  padding-top: 100px;
-  padding-bottom: 6rem;
+  padding-top: 60px; /* Reduced padding on mobile viewports */
+  padding-bottom: 3.5rem;
   color: #ffffff;
   border-top: 1px solid rgba(255, 255, 255, 0.05);
 }
@@ -15,8 +15,15 @@
 
 .headerGrid {
   border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-  padding-bottom: 4rem;
-  margin-bottom: 4rem;
+  padding-bottom: 0; /* Removed on mobile */
+  margin-bottom: 0; /* Removed on mobile */
+}
+
+@media (min-width: 768px) {
+  .headerGrid {
+    padding-bottom: 4rem;
+    margin-bottom: 4rem;
+  }
 }
 
 .fullWidthLabel {

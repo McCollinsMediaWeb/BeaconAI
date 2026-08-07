@@ -13,7 +13,6 @@ export default function Navbar() {
     { label: "Work", href: "#work" },
     { label: "About", href: "#about" },
     { label: "Services", href: "#services" },
-    { label: "Contact", href: "#contact" },
   ];
 
   return (
@@ -68,7 +67,7 @@ export default function Navbar() {
           aria-label="Toggle navigation menu"
         >
           <svg
-            className="h-6 w-6"
+            className={styles.menuIcon}
             fill="none"
             viewBox="0 0 24 24"
             stroke="currentColor"

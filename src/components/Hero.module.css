@@ -1,12 +1,10 @@
 .heroSection {
   position: relative;
   display: flex;
-  /* min-height: calc(100vh - 50px); */
   min-height: 100vh;
   align-items: center;
-  background-color: #000000;
-  background-size: cover;
-  background-position: center bottom;
+  /* Interactive spotlight radial glow overlayed on dark theme */
+  /* background: radial-gradient(circle 450px at var(--mouse-x, 50%) var(--mouse-y, 50%), rgba(232, 92, 51, 0.1) 0%, transparent 100%), #060606; */
   color: #ffffff;
   overflow: hidden;
   user-select: none;
@@ -17,15 +15,16 @@
 .imageOverlay {
   position: absolute;
   top: 40%;
-  left: 45%;
+  left: 50%;
   transform: translate(-50%, -50%);
   z-index: 0;
-  height: 45%;
+  height: 36%;
   width: auto;
   object-fit: contain;
   pointer-events: none;
   user-select: none;
-  opacity: 0.9;
+  opacity: 1;
+  /* Translucent on mobile so overlayed description text is highly legible */
 }
 
 @media (min-width: 1024px) {
