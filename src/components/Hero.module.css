@@ -1,0 +1,119 @@
+.heroSection {
+  position: relative;
+  display: flex;
+  /* min-height: calc(100vh - 50px); */
+  min-height: 100vh;
+  align-items: center;
+  background-color: #000000;
+  background-size: cover;
+  background-position: center bottom;
+  color: #ffffff;
+  overflow: hidden;
+  user-select: none;
+  padding-top: 5rem;
+  padding-bottom: 5rem;
+}
+
+.imageOverlay {
+  position: absolute;
+  top: 40%;
+  left: 45%;
+  transform: translate(-50%, -50%);
+  z-index: 0;
+  height: 45%;
+  width: auto;
+  object-fit: contain;
+  pointer-events: none;
+  user-select: none;
+  opacity: 0.9;
+}
+
+@media (min-width: 1024px) {
+  .imageOverlay {
+    /* left: auto; */
+    /* right: 12%; */
+    top: 40%;
+    transform: translate(0, -50%);
+    height: 60%;
+    opacity: 1;
+  }
+}
+
+@media (min-width: 1440px) {
+  .imageOverlay {
+    /* left: auto; */
+    left: 43%;
+    /* right: calc((100vw - 1440px) / 2 + 120px); */
+    top: 45%;
+    transform: translate(0, -50%);
+    height: 60%;
+    opacity: 1;
+  }
+}
+
+.textWrapper {
+  max-width: 500px;
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+}
+
+.description {
+  font-family: var(--font-helvetica);
+  font-size: clamp(17px, 1.5vw, 21px);
+  font-weight: 300;
+  line-height: 1.6;
+  color: #ffffff;
+  letter-spacing: 0.02em;
+}
+
+.btnRow {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 1rem;
+  padding-top: 0.5rem;
+}
+
+.auditBtn {
+  font-family: var(--font-manrope);
+  font-weight: 600;
+  font-size: clamp(13px, 0.9vw, 15px);
+  color: #000;
+  letter-spacing: 0.02em;
+  border-radius: 9999px;
+  padding: 1rem 2rem;
+  text-align: center;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  background: url('/button-bg.png') no-repeat center;
+  background-size: cover;
+  border: 1px solid rgba(255, 255, 255, 1);
+  /* backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.3); */
+  cursor: pointer;
+}
+
+.auditBtn:hover {
+  transform: scale(1.05);
+}
+
+.roiBtn {
+  font-family: var(--font-manrope);
+  font-weight: 600;
+  font-size: clamp(13px, 0.9vw, 15px);
+  color: rgba(240, 84, 31, 0.9);
+  letter-spacing: 0.02em;
+  border-radius: 9999px;
+  padding: 1rem 2rem;
+  text-align: center;
+  background-color: #000000;
+  border: 1px solid rgba(255, 255, 255, 1);
+  transition: transform 0.3s ease, background-color 0.3s ease;
+  cursor: pointer;
+}
+
+.roiBtn:hover {
+  transform: scale(1.05);
+  /* background-color: rgba(255, 255, 255, 0.05); */
+}

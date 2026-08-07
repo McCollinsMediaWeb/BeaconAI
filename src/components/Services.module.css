@@ -1,0 +1,224 @@
+.section {
+  background-color: rgba(238, 238, 238, 1);
+  padding-top: 80px;
+  padding-bottom: 6rem;
+}
+
+@media (min-width: 768px) {
+  .section {
+    padding-top: 80px;
+    padding-bottom: 8rem;
+  }
+}
+
+/* Header grid layout */
+.headerGrid {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  margin-bottom: 5.5rem;
+}
+
+.leftCol {
+  width: 100%;
+}
+
+.rightCol {
+  width: 100%;
+}
+
+@media (min-width: 768px) {
+  .headerGrid {
+    display: flex;
+    flex-direction: row;
+    gap: 3rem;
+  }
+
+  .leftCol {
+    flex: 0 0 calc(35% - 1.5rem);
+    position: sticky;
+    top: 120px;
+    align-self: flex-start;
+  }
+
+  .rightCol {
+    flex: 0 0 calc(65% - 1.5rem);
+    padding-left: 2rem;
+  }
+}
+
+.leftHeader {
+  display: flex;
+  align-items: center;
+  gap: 4rem;
+  font-family: var(--font-sans);
+  font-size: clamp(12px, 0.9vw, 15px);
+  font-weight: 500;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: rgba(105, 97, 85, 1);
+}
+
+.indexNum {
+  opacity: 0.6;
+}
+
+.categoryTitle {
+  font-weight: 500;
+}
+
+.heading {
+  font-family: var(--font-sans);
+  font-size: clamp(2rem, 3.5vw, 2.65rem);
+  font-weight: 800;
+  line-height: 1.1;
+  letter-spacing: -0.03em;
+  text-transform: uppercase;
+  color: #09090b;
+}
+
+.italicSerif {
+  font-family: var(--font-instrument);
+  font-style: italic;
+  font-weight: 400;
+  text-transform: none;
+  display: block;
+  margin-top: 0.5rem;
+  letter-spacing: -0.04em;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 2rem;
+}
+
+@media (min-width: 768px) {
+  .grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+.card {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  overflow: hidden;
+  border-radius: 1rem;
+  padding: 2rem;
+  min-height: 480px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.04);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+@media (min-width: 768px) {
+  .card {
+    padding: 2.5rem;
+    min-height: 560px;
+    /* Taller card layout */
+  }
+}
+
+.card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.08);
+}
+
+.cardDark {
+  background-color: var(--bg-card-dark);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.cardAutomate {
+  background-color: var(--card-automate);
+  border: 1px solid rgba(232, 92, 51, 0.05);
+}
+
+.cardOptimize {
+  background-color: var(--card-optimize);
+  border: 1px solid rgba(79, 70, 229, 0.05);
+}
+
+.imageWrapper {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  height: 100%;
+  /* Graphic fills the entire card background */
+  width: 100%;
+  user-select: none;
+  overflow: hidden;
+  z-index: 1;
+}
+
+/* Subtle dark overlay at the bottom to ensure high text contrast */
+.imageWrapper::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to bottom, transparent 50%, rgba(0, 0, 0, 0.4) 100%);
+  pointer-events: none;
+  z-index: 2;
+}
+
+/* For bright light/colored backgrounds, we can use a soft light overlay if needed, or let the dark text stand out */
+.cardAutomate .imageWrapper::after,
+.cardOptimize .imageWrapper::after {
+  background: linear-gradient(to bottom, transparent 60%, rgba(255, 255, 255, 0.1) 100%);
+}
+
+.cardVideo {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.cardContent {
+  position: relative;
+  z-index: 10;
+  /* Overlay content on top of graphic */
+  margin-top: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 0.625rem;
+}
+
+.cardTitle {
+  font-family: var(--font-sans);
+  /* Inter */
+  font-size: clamp(20px, 1.8vw, 24px);
+  font-weight: 400;
+  /* Inter 400 */
+  letter-spacing: -0.01em;
+  text-transform: uppercase;
+  margin: 0;
+}
+
+.titleLight {
+  color: #ffffff;
+}
+
+.titleDark {
+  color: #18181b;
+}
+
+.cardDesc {
+  font-family: var(--font-helvetica);
+  /* Helvetica Neue */
+  font-size: clamp(13px, 0.95vw, 15px);
+  font-weight: 400;
+  /* Helvetica Neue 400 */
+  line-height: 1.5;
+  margin: 0;
+}
+
+.descDark {
+  color: rgba(255, 255, 255, 1);
+}
+
+.descLight {
+  color: rgba(24, 24, 27, 0.85);
+}
