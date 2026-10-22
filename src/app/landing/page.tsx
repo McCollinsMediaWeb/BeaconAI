@@ -49,35 +49,68 @@ export default function LandingPage() {
   const [formErrors, setFormErrors] = useState<Record<string, string>>({});
 
   const containerRef = useRef<HTMLDivElement>(null);
+  const formStepRef = useRef<HTMLDivElement>(null);
 
   // GSAP Animations
   useEffect(() => {
     gsap.registerPlugin(ScrollTrigger);
 
     const ctx = gsap.context(() => {
-      // Hero entrance
+      // 1. Hero entrance timeline
       gsap.fromTo(
         ".lp-hero-anim",
-        { opacity: 0, y: 30 },
-        { opacity: 1, y: 0, duration: 0.9, stagger: 0.15, ease: "power3.out" }
+        { opacity: 0, y: 35 },
+        { opacity: 1, y: 0, duration: 0.9, stagger: 0.12, ease: "power3.out" }
       );
 
-      // Dash mock float entrance
+      // 2. Dash mock 3D entrance and gentle floating hover
       gsap.fromTo(
         ".lp-dash-anim",
-        { opacity: 0, scale: 0.95, y: 30 },
-        { opacity: 1, scale: 1, y: 0, duration: 1, delay: 0.3, ease: "power3.out" }
+        { opacity: 0, scale: 0.94, y: 35 },
+        {
+          opacity: 1,
+          scale: 1,
+          y: 0,
+          duration: 1,
+          delay: 0.2,
+          ease: "back.out(1.4)",
+        }
       );
 
-      // Scroll reveals for Areas
+      gsap.to(".lp-dash-anim", {
+        y: -8,
+        duration: 3.5,
+        repeat: -1,
+        yoyo: true,
+        ease: "sine.inOut",
+      });
+
+      // 3. Logos marquee reveal
       gsap.fromTo(
-        ".area-card",
+        ".logos",
         { opacity: 0, y: 25 },
         {
           opacity: 1,
           y: 0,
-          duration: 0.6,
-          stagger: 0.08,
+          duration: 0.8,
+          ease: "power2.out",
+          scrollTrigger: {
+            trigger: ".logos",
+            start: "top 88%",
+          },
+        }
+      );
+
+      // 4. Scroll reveals for Areas (3D cascade)
+      gsap.fromTo(
+        ".area-card",
+        { opacity: 0, y: 35, scale: 0.95 },
+        {
+          opacity: 1,
+          y: 0,
+          scale: 1,
+          duration: 0.65,
+          stagger: 0.07,
           ease: "power2.out",
           scrollTrigger: {
             trigger: ".areas",
@@ -86,15 +119,16 @@ export default function LandingPage() {
         }
       );
 
-      // Scroll reveals for Deliverables
+      // 5. Scroll reveals for Deliverables
       gsap.fromTo(
         ".deliverable-card",
-        { opacity: 0, y: 30 },
+        { opacity: 0, y: 40, scale: 0.96 },
         {
           opacity: 1,
           y: 0,
-          duration: 0.7,
-          stagger: 0.12,
+          scale: 1,
+          duration: 0.75,
+          stagger: 0.14,
           ease: "power3.out",
           scrollTrigger: {
             trigger: ".get",
@@ -103,15 +137,15 @@ export default function LandingPage() {
         }
       );
 
-      // Scroll reveals for Flow steps
+      // 6. Scroll reveals for Flow steps
       gsap.fromTo(
         ".flow-step",
-        { opacity: 0, y: 25 },
+        { opacity: 0, y: 35 },
         {
           opacity: 1,
           y: 0,
-          duration: 0.7,
-          stagger: 0.15,
+          duration: 0.75,
+          stagger: 0.16,
           ease: "power2.out",
           scrollTrigger: {
             trigger: ".flow",
@@ -120,27 +154,129 @@ export default function LandingPage() {
         }
       );
 
-      // Scroll reveals for Proof stats
+      // 7. Scroll reveals for Proof stats (pop in)
       gsap.fromTo(
         ".stat-card",
-        { opacity: 0, scale: 0.96, y: 20 },
+        { opacity: 0, scale: 0.92, y: 30 },
         {
           opacity: 1,
           scale: 1,
           y: 0,
-          duration: 0.7,
-          stagger: 0.15,
-          ease: "power2.out",
+          duration: 0.8,
+          stagger: 0.16,
+          ease: "back.out(1.4)",
           scrollTrigger: {
             trigger: ".stats",
             start: "top 85%",
           },
         }
       );
+
+      // 8. Book section left tick list & formcard entrance
+      gsap.fromTo(
+        ".dark-ticks li",
+        { opacity: 0, x: -25 },
+        {
+          opacity: 1,
+          x: 0,
+          duration: 0.6,
+          stagger: 0.12,
+          ease: "power2.out",
+          scrollTrigger: {
+            trigger: ".dark-ticks",
+            start: "top 85%",
+          },
+        }
+      );
+
+      gsap.fromTo(
+        "#book .formcard",
+        { opacity: 0, y: 40, scale: 0.98 },
+        {
+          opacity: 1,
+          y: 0,
+          scale: 1,
+          duration: 0.8,
+          ease: "power3.out",
+          scrollTrigger: {
+            trigger: "#book .formcard",
+            start: "top 85%",
+          },
+        }
+      );
+
+      // 9. FAQ accordion reveals
+      gsap.fromTo(
+        ".faq details",
+        { opacity: 0, y: 22 },
+        {
+          opacity: 1,
+          y: 0,
+          duration: 0.55,
+          stagger: 0.08,
+          ease: "power2.out",
+          scrollTrigger: {
+            trigger: ".faq",
+            start: "top 85%",
+          },
+        }
+      );
+
+      // 10. Final CTA banner
+      gsap.fromTo(
+        ".final",
+        { opacity: 0, scale: 0.97 },
+        {
+          opacity: 1,
+          scale: 1,
+          duration: 0.8,
+          ease: "power3.out",
+          scrollTrigger: {
+            trigger: ".final",
+            start: "top 88%",
+          },
+        }
+      );
+
+      // 11. Floating WhatsApp continuous gentle bob
+      gsap.to(".wa-float", {
+        y: -6,
+        duration: 2.2,
+        repeat: -1,
+        yoyo: true,
+        ease: "sine.inOut",
+      });
     }, containerRef);
 
     return () => ctx.revert();
   }, []);
+
+  // Animate form step transition
+  useEffect(() => {
+    if (formStepRef.current) {
+      gsap.fromTo(
+        formStepRef.current,
+        { opacity: 0, x: 20 },
+        { opacity: 1, x: 0, duration: 0.4, ease: "power2.out" }
+      );
+    }
+  }, [formStep]);
+
+  // Animate form submission success checkmark
+  useEffect(() => {
+    if (formSubmitted) {
+      gsap.fromTo(
+        ".success .tick",
+        { scale: 0, rotation: -30 },
+        { scale: 1, rotation: 0, duration: 0.6, ease: "back.out(2)" }
+      );
+      gsap.fromTo(
+        ".success h3, .success ol li",
+        { opacity: 0, y: 15 },
+        { opacity: 1, y: 0, duration: 0.45, stagger: 0.1, delay: 0.15, ease: "power2.out" }
+      );
+    }
+  }, [formSubmitted]);
 
   const validateStep1 = () => {
     const errs: Record<string, string> = {};
@@ -694,7 +830,7 @@ export default function LandingPage() {
 
                 {/* Step 1 */}
                 {formStep === 0 && (
-                  <div className="form">
+                  <div ref={formStepRef} className="form">
                     <div className="row">
                       <div className={`field ${formErrors.name ? "bad" : ""}`}>
                         <label htmlFor="lp-form-name">Full name</label>
@@ -800,7 +936,7 @@ export default function LandingPage() {
 
                 {/* Step 2 */}
                 {formStep === 1 && (
-                  <div className="form">
+                  <div ref={formStepRef} className="form">
                     <div className="row">
                       <div className={`field ${formErrors.role ? "bad" : ""}`}>
                         <label htmlFor="lp-form-role">Your role</label>

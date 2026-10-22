@@ -235,45 +235,122 @@ export default function Home() {
 
   const mainRef = useRef<HTMLDivElement>(null);
   const svcRef = useRef<HTMLDivElement>(null);
+  const formStepRef = useRef<HTMLDivElement>(null);
+
+  // Smooth Estimator calculations via GSAP number interpolation
+  const calcObj = useRef({
+    hours: 20 * 8 * 48,
+    cost: 20 * 8 * 48 * (12000 / 173),
+  });
+  const [animHours, setAnimHours] = useState(calcObj.current.hours);
+  const [animCost, setAnimCost] = useState(calcObj.current.cost);
+
+  useEffect(() => {
+    const targetHours = people * hours * 48;
+    const targetCost = targetHours * (salary / 173);
+
+    gsap.to(calcObj.current, {
+      hours: targetHours,
+      cost: targetCost,
+      duration: 0.45,
+      ease: "power2.out",
+      onUpdate: () => {
+        setAnimHours(Math.round(calcObj.current.hours));
+        setAnimCost(Math.round(calcObj.current.cost));
+      },
+    });
+  }, [people, hours, salary]);
+
+  const formattedHours = Math.round(animHours).toLocaleString("en-US");
+  const formattedCost =
+    animCost >= 1e6
+      ? `AED ${(animCost / 1e6).toFixed(2)}M`
+      : `AED ${Math.round(animCost / 1000).toLocaleString("en-US")}K`;
 
   // GSAP Entrance & ScrollTrigger animations
   useEffect(() => {
     gsap.registerPlugin(ScrollTrigger);
 
     const ctx = gsap.context(() => {
-      // Hero entrance
+      // 1. Hero entrance
       gsap.fromTo(
         ".hero-anim",
-        { opacity: 0, y: 30 },
-        { opacity: 1, y: 0, duration: 0.9, stagger: 0.15, ease: "power3.out" }
+        { opacity: 0, y: 35 },
+        { opacity: 1, y: 0, duration: 0.9, stagger: 0.12, ease: "power3.out" }
       );
 
-      // Section headings reveal
+      // 2. Hero subtle background parallax on scroll
+      gsap.to(".hero", {
+        backgroundPosition: "75% 65%",
+        ease: "none",
+        scrollTrigger: {
+          trigger: ".hero",
+          start: "top top",
+          end: "bottom top",
+          scrub: 1,
+        },
+      });
+
+      // 3. Client logos marquee entrance
+      gsap.fromTo(
+        ".logos",
+        { opacity: 0, y: 25 },
+        {
+          opacity: 1,
+          y: 0,
+          duration: 0.8,
+          ease: "power2.out",
+          scrollTrigger: {
+            trigger: ".logos",
+            start: "top 88%",
+          },
+        }
+      );
+
+      // 4. Section headings reveal
       const sections = document.querySelectorAll(".sec");
       sections.forEach((sec) => {
         const head = sec.querySelector(".head-row, .h-lg");
         if (head) {
           gsap.fromTo(
             head,
-            { opacity: 0, y: 25 },
+            { opacity: 0, y: 30 },
             {
               opacity: 1,
               y: 0,
-              duration: 0.8,
-              ease: "power2.out",
+              duration: 0.85,
+              ease: "power3.out",
               scrollTrigger: {
                 trigger: sec,
-                start: "top 80%",
+                start: "top 82%",
               },
             }
           );
         }
       });
 
-      // Layer elements
+      // 5. System Layer elements 3D entrance
       gsap.fromTo(
         ".layer-anim",
-        { opacity: 0, y: 20 },
+        { opacity: 0, y: 35, scale: 0.98 },
+        {
+          opacity: 1,
+          y: 0,
+          scale: 1,
+          duration: 0.7,
+          stagger: 0.12,
+          ease: "power2.out",
+          scrollTrigger: {
+            trigger: ".layers",
+            start: "top 82%",
+          },
+        }
+      );
+
+      // 6. Applied outcomes cards in Layer section
+      gsap.fromTo(
+        ".applied div",
+        { opacity: 0, y: 25 },
         {
           opacity: 1,
           y: 0,
@@ -281,21 +358,90 @@ export default function Home() {
           stagger: 0.1,
           ease: "power2.out",
           scrollTrigger: {
-            trigger: ".layers",
+            trigger: ".applied",
             start: "top 85%",
           },
         }
       );
 
-      // Case cards
+      // 7. Problem pillars 4-cards reveal
       gsap.fromTo(
-        ".case-anim",
-        { opacity: 0, y: 30 },
+        ".pillar",
+        { opacity: 0, y: 35, scale: 0.96 },
         {
           opacity: 1,
           y: 0,
-          duration: 0.7,
-          stagger: 0.15,
+          scale: 1,
+          duration: 0.65,
+          stagger: 0.12,
+          ease: "power2.out",
+          scrollTrigger: {
+            trigger: ".pillars",
+            start: "top 85%",
+          },
+        }
+      );
+
+      // 8. Callout band reveal
+      gsap.fromTo(
+        ".band",
+        { opacity: 0, scale: 0.96 },
+        {
+          opacity: 1,
+          scale: 1,
+          duration: 0.75,
+          ease: "power3.out",
+          scrollTrigger: {
+            trigger: ".band",
+            start: "top 88%",
+          },
+        }
+      );
+
+      // 9. ROI Estimator card reveal
+      gsap.fromTo(
+        ".est-card",
+        { opacity: 0, y: 40, scale: 0.98 },
+        {
+          opacity: 1,
+          y: 0,
+          scale: 1,
+          duration: 0.8,
+          ease: "power3.out",
+          scrollTrigger: {
+            trigger: ".est",
+            start: "top 82%",
+          },
+        }
+      );
+
+      // 10. How We Work (3 Engagement Tiers)
+      gsap.fromTo(
+        ".eng .eg",
+        { opacity: 0, y: 45 },
+        {
+          opacity: 1,
+          y: 0,
+          duration: 0.75,
+          stagger: 0.16,
+          ease: "power3.out",
+          scrollTrigger: {
+            trigger: ".eng",
+            start: "top 85%",
+          },
+        }
+      );
+
+      // 11. Case cards in Results
+      gsap.fromTo(
+        ".case-anim",
+        { opacity: 0, y: 45, scale: 0.98 },
+        {
+          opacity: 1,
+          y: 0,
+          scale: 1,
+          duration: 0.8,
+          stagger: 0.18,
           ease: "power3.out",
           scrollTrigger: {
             trigger: ".cases",
@@ -303,30 +449,161 @@ export default function Home() {
           },
         }
       );
+
+      // 12. Why Beacon (5 Operating Principles)
+      gsap.fromTo(
+        ".prin div",
+        { opacity: 0, y: 30 },
+        {
+          opacity: 1,
+          y: 0,
+          duration: 0.65,
+          stagger: 0.1,
+          ease: "power2.out",
+          scrollTrigger: {
+            trigger: ".prin",
+            start: "top 85%",
+          },
+        }
+      );
+
+      // 13. Next steps ordered list in Where to Start
+      gsap.fromTo(
+        ".next li",
+        { opacity: 0, x: -30 },
+        {
+          opacity: 1,
+          x: 0,
+          duration: 0.65,
+          stagger: 0.12,
+          ease: "power2.out",
+          scrollTrigger: {
+            trigger: ".next",
+            start: "top 85%",
+          },
+        }
+      );
+
+      // 14. Contact formcard entrance
+      gsap.fromTo(
+        "#contact .formcard",
+        { opacity: 0, y: 40, scale: 0.98 },
+        {
+          opacity: 1,
+          y: 0,
+          scale: 1,
+          duration: 0.8,
+          ease: "power3.out",
+          scrollTrigger: {
+            trigger: "#contact .formcard",
+            start: "top 85%",
+          },
+        }
+      );
+
+      // 15. FAQ details cards reveal
+      gsap.fromTo(
+        ".faq details",
+        { opacity: 0, y: 24 },
+        {
+          opacity: 1,
+          y: 0,
+          duration: 0.55,
+          stagger: 0.08,
+          ease: "power2.out",
+          scrollTrigger: {
+            trigger: ".faq",
+            start: "top 85%",
+          },
+        }
+      );
+
+      // 16. Massive Footer BEACON AI text tracking expansion
+      gsap.fromTo(
+        ".foot .big",
+        { opacity: 0.25, letterSpacing: "-0.075em", y: 25 },
+        {
+          opacity: 1,
+          letterSpacing: "-0.05em",
+          y: 0,
+          duration: 1.1,
+          ease: "power3.out",
+          scrollTrigger: {
+            trigger: ".foot",
+            start: "top 88%",
+          },
+        }
+      );
+
+      // 17. Floating WhatsApp button continuous gentle bob
+      gsap.to(".wa-float", {
+        y: -6,
+        duration: 2.2,
+        repeat: -1,
+        yoyo: true,
+        ease: "sine.inOut",
+      });
     }, mainRef);
 
     return () => ctx.revert();
   }, []);
 
-  // Animate tab content change
+  // Animate tab content change with staggered micro-animations
   useEffect(() => {
     if (svcRef.current) {
-      gsap.fromTo(
-        svcRef.current,
-        { opacity: 0.2, y: 12 },
-        { opacity: 1, y: 0, duration: 0.4, ease: "power2.out" }
-      );
+      const ctx = gsap.context(() => {
+        gsap.fromTo(
+          ".svc-title, .svc-tag",
+          { opacity: 0, y: -10 },
+          { opacity: 1, y: 0, duration: 0.35, ease: "power2.out" }
+        );
+        gsap.fromTo(
+          ".breaks li",
+          { opacity: 0, x: -16 },
+          { opacity: 1, x: 0, duration: 0.4, stagger: 0.08, ease: "power2.out" }
+        );
+        gsap.fromTo(
+          ".steps4 .s4",
+          { opacity: 0, y: 16 },
+          { opacity: 1, y: 0, duration: 0.45, stagger: 0.08, ease: "power2.out" }
+        );
+        gsap.fromTo(
+          ".dash-body .tile",
+          { opacity: 0, scale: 0.94, y: 12 },
+          { opacity: 1, scale: 1, y: 0, duration: 0.45, stagger: 0.08, ease: "back.out(1.5)" }
+        );
+      }, svcRef);
+
+      return () => ctx.revert();
     }
   }, [activeTab]);
 
-  // Estimator Calculations
-  const totalHours = people * hours * 48;
-  const totalCost = totalHours * (salary / 173);
-  const formattedHours = Math.round(totalHours).toLocaleString("en-US");
-  const formattedCost =
-    totalCost >= 1e6
-      ? `AED ${(totalCost / 1e6).toFixed(2)}M`
-      : `AED ${Math.round(totalCost / 1000).toLocaleString("en-US")}K`;
+  // Animate form step transition
+  useEffect(() => {
+    if (formStepRef.current) {
+      gsap.fromTo(
+        formStepRef.current,
+        { opacity: 0, x: 20 },
+        { opacity: 1, x: 0, duration: 0.4, ease: "power2.out" }
+      );
+    }
+  }, [formStep]);
+
+  // Animate form submission success checkmark
+  useEffect(() => {
+    if (formSubmitted) {
+      gsap.fromTo(
+        ".success .tick",
+        { scale: 0, rotation: -30 },
+        { scale: 1, rotation: 0, duration: 0.6, ease: "back.out(2)" }
+      );
+      gsap.fromTo(
+        ".success h3, .success ol li",
+        { opacity: 0, y: 15 },
+        { opacity: 1, y: 0, duration: 0.45, stagger: 0.1, delay: 0.15, ease: "power2.out" }
+      );
+    }
+  }, [formSubmitted]);
 
   // Function selection jump
   const handleSelectFunction = (id: string) => {
@@ -1116,7 +1393,7 @@ export default function Home() {
 
                 {/* Step 1 */}
                 {formStep === 0 && (
-                  <div className="form">
+                  <div ref={formStepRef} className="form">
                     <div className="row">
                       <div className={`field ${formErrors.name ? "bad" : ""}`}>
                         <label htmlFor="home-form-name">Full name</label>
@@ -1189,7 +1466,7 @@ export default function Home() {
 
                 {/* Step 2 */}
                 {formStep === 1 && (
-                  <div className="form">
+                  <div ref={formStepRef} className="form">
                     <div className="row">
                       <div className={`field ${formErrors.role ? "bad" : ""}`}>
                         <label htmlFor="home-form-role">Your role</label>
