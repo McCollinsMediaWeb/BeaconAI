@@ -1,29 +1,42 @@
 /* Custom CSS Reset & Theme Variables */
 :root {
   /* Color Variables */
-  --bg-dark: #060606;
-  --bg-light: #F4F4F5;
-  --bg-card-dark: #121212;
+  --bg-dark: #0A0B0D;
+  --bg-dark-card: #121316;
+  --bg-dark-elevated: #18191E;
+  --border-dark: rgba(255, 255, 255, 0.08);
+  --border-dark-highlight: rgba(255, 255, 255, 0.16);
 
-  --brand-orange: #E85C33;
+  --bg-light: #F3F2EE;
+  --bg-light-card: #FFFFFF;
+  --border-light: rgba(0, 0, 0, 0.08);
+  --border-light-subtle: rgba(0, 0, 0, 0.04);
 
-  --text-dark: #060606;
-  --text-light: #F4F4F5;
-  --text-muted-dark: #A1A1AA;
-  --text-muted-light: #71717A;
+  --brand-orange: #FF5722;
+  --brand-orange-light: #FF6E40;
+  --brand-coral: #E85C33;
+  --brand-peach: #FDEEE7;
+  --brand-lavender: #F2F3F9;
 
-  --card-automate: #FFEBE3;
-  --card-optimize: #EFEFFF;
+  --text-dark: #0A0B0D;
+  --text-dark-secondary: #4A4D55;
+  --text-dark-muted: #7E828E;
+
+  --text-light: #FFFFFF;
+  --text-light-secondary: #C5C8D0;
+  --text-light-muted: #8E9199;
+
+  --accent-green: #10B981;
+  --accent-red: #EF4444;
 
   /* Font Family Variables */
-  --font-serif: var(--font-playfair), "Playfair Display", Georgia, serif;
-  --font-sans: var(--font-inter), Inter, sans-serif;
+  --font-serif: var(--font-instrument-serif), "Instrument Serif", Georgia, serif;
+  --font-sans: var(--font-helvetica-neue), "Helvetica Neue", Helvetica, -apple-system, BlinkMacSystemFont, sans-serif;
+  --font-inter: var(--font-inter), Inter, sans-serif;
   --font-manrope: var(--font-manrope-local), Manrope, sans-serif;
-  --font-helvetica: var(--font-helvetica-neue), "Helvetica Neue", Helvetica, Arial, sans-serif;
-  --font-instrument: var(--font-instrument-serif), "Instrument Serif", Georgia, serif;
 
   /* Layout Constants */
-  --max-width: 1440px;
+  --slide-max-width: 1360px;
 }
 
 /* Base resets */
@@ -35,8 +48,8 @@
 
 html,
 body {
-  height: 100%;
   width: 100%;
+  min-height: 100%;
 }
 
 html {
@@ -46,7 +59,7 @@ html {
 }
 
 body {
-  font-family: var(--font-helvetica);
+  font-family: var(--font-sans);
   min-height: 100vh;
   overflow-x: hidden;
   display: flex;
@@ -67,23 +80,141 @@ button {
   font: inherit;
 }
 
-input {
+input, textarea, select {
   font: inherit;
 }
 
-/* Universal layout helper class */
-.container {
+/* Slide Container */
+.slide-section {
+  position: relative;
   width: 100%;
-  max-width: var(--max-width);
-  margin-left: auto;
-  margin-right: auto;
-  padding-left: 1.5rem;
-  padding-right: 1.5rem;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: 5.5rem 2rem 2.5rem 2rem;
+  box-sizing: border-box;
+  border-bottom: 1px solid rgba(128, 128, 128, 0.12);
+  overflow: hidden;
+  scroll-margin-top: 4.5rem;
 }
 
-@media (min-width: 768px) {
-  .container {
-    padding-left: 3rem;
-    padding-right: 3rem;
+@media (min-width: 1024px) {
+  .slide-section {
+    padding: 6.25rem 3.5rem 2.5rem 3.5rem;
+    min-height: 100vh;
   }
+}
+
+.slide-content-wrap {
+  width: 100%;
+  max-width: var(--slide-max-width);
+  margin-left: auto;
+  margin-right: auto;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+/* Dark slide theme */
+.slide-dark {
+  background-color: var(--bg-dark);
+  color: var(--text-light);
+}
+
+/* Light slide theme */
+.slide-light {
+  background-color: var(--bg-light);
+  color: var(--text-dark);
+}
+
+/* Section Tag e.g. (01) THE PROBLEM */
+.slide-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.8125rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  font-weight: 600;
+  margin-bottom: 1.25rem;
+}
+
+.slide-tag .tag-num {
+  color: var(--brand-orange);
+  font-weight: 700;
+}
+
+.slide-dark .slide-tag .tag-text {
+  color: var(--text-light-muted);
+}
+
+.slide-light .slide-tag .tag-text {
+  color: var(--text-dark-muted);
+}
+
+/* Typography styles */
+.serif-italic {
+  font-family: var(--font-serif);
+  font-style: italic;
+  font-weight: 400;
+}
+
+.slide-heading {
+  font-size: clamp(2.2rem, 4.8vw, 4.2rem);
+  font-weight: 800;
+  line-height: 1.05;
+  letter-spacing: -0.03em;
+  text-transform: uppercase;
+  margin-bottom: 2rem;
+}
+
+.slide-heading .serif-italic {
+  text-transform: none;
+  font-weight: 400;
+  letter-spacing: -0.01em;
+}
+
+/* Slide Footer */
+.slide-footer {
+  width: 100%;
+  max-width: var(--slide-max-width);
+  margin-left: auto;
+  margin-right: auto;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-top: 1.25rem;
+  padding-right: 5.5rem; /* avoids collision with bottom-right floating pill */
+  border-top: 1px solid rgba(128, 128, 128, 0.12);
+  font-size: 0.75rem;
+  letter-spacing: 0.05em;
+}
+
+.slide-dark .slide-footer {
+  color: var(--text-light-muted);
+}
+
+.slide-light .slide-footer {
+  color: var(--text-dark-muted);
+}
+
+.slide-light .logo-invert {
+  filter: brightness(0);
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+  width: 6px;
+}
+::-webkit-scrollbar-track {
+  background: var(--bg-dark);
+}
+::-webkit-scrollbar-thumb {
+  background: #333;
+  border-radius: 3px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: var(--brand-orange);
 }
