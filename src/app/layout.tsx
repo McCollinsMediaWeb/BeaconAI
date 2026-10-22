@@ -58,6 +58,14 @@ const helveticaNeue = localFont({
 export const metadata: Metadata = {
   title: "Beacon AI — Audit, Automate, Optimize",
   description: "Beacon turns AI from pilot theatre into measurable operating leverage built around return.",
+  icons: {
+    icon: [
+      { url: "/assets/favicon.png" },
+      { url: "/icon.png" },
+    ],
+    shortcut: "/assets/favicon.png",
+    apple: "/assets/favicon.png",
+  },
 };
 
 export default function RootLayout({ children }: LayoutProps<"/">) {
