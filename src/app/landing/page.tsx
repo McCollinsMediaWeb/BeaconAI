@@ -228,7 +228,7 @@ export default function LandingPage() {
           <div className="right">
             <a
               className="wa"
-              href="https://wa.me/971000000000"
+              href="https://wa.me/971559564135"
               target="_blank"
               rel="noopener"
             >
@@ -299,7 +299,7 @@ export default function LandingPage() {
               </a>
               <a
                 className="btn btn-ghost"
-                href="https://wa.me/971000000000"
+                href="https://wa.me/971559564135"
                 target="_blank"
                 rel="noopener"
               >
@@ -1042,7 +1042,7 @@ export default function LandingPage() {
       {/* Floating WhatsApp Button */}
       <a
         className="wa-float"
-        href="https://wa.me/971000000000"
+        href="https://wa.me/971559564135"
         target="_blank"
         rel="noopener"
         aria-label="Chat on WhatsApp"
@@ -1056,7 +1056,7 @@ export default function LandingPage() {
       <div className="mbar">
         <a
           className="btn btn-wa"
-          href="https://wa.me/971000000000"
+          href="https://wa.me/971559564135"
           target="_blank"
           rel="noopener"
           style={{ flex: "0 0 auto", padding: "0 18px" }}

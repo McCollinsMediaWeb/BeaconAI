@@ -1093,7 +1093,7 @@ export default function Home() {
             <div className="reach">
               <a
                 className="btn btn-wa"
-                href="https://wa.me/971000000000?text=Hi%20Beacon%2C%20I%27d%20like%20to%20discuss%20a%20business%20audit"
+                href="https://wa.me/971559564135?text=Hi%20Beacon%2C%20I%27d%20like%20to%20discuss%20a%20business%20audit"
                 target="_blank"
                 rel="noopener"
               >
@@ -1421,7 +1421,7 @@ export default function Home() {
       {/* Floating WhatsApp Action Button */}
       <a
         className="wa-float"
-        href="https://wa.me/971000000000"
+        href="https://wa.me/971559564135"
         target="_blank"
         rel="noopener"
         aria-label="Chat on WhatsApp"
