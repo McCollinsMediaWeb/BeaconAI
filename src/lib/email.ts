@@ -118,22 +118,22 @@ export function renderLeadEmailHtml(lead: LeadPayload): string {
               </h2>
               <table role="presentation" width="100%" style="border-collapse:collapse;">
                 <tr>
-                  <td width="35%" style="padding:8px 0;color:#6B7280;font-size:13px;font-weight:600;">Role:</td>
+                  <td width="35%" style="padding:8px 0;color:#6B7280;font-size:13px;font-weight:600;">Your Role:</td>
                   <td style="padding:8px 0;color:#111827;font-size:14px;font-weight:600;">${escapeHtml(lead.role || "Not specified")}</td>
                 </tr>
                 <tr>
-                  <td style="padding:8px 0;color:#6B7280;font-size:13px;font-weight:600;">Team Size:</td>
+                  <td width="35%" style="padding:8px 0;color:#6B7280;font-size:13px;font-weight:600;">Team Size:</td>
                   <td style="padding:8px 0;color:#111827;font-size:14px;font-weight:600;">${escapeHtml(lead.size || "Not specified")}</td>
                 </tr>
                 <tr>
-                  <td style="padding:8px 0;color:#6B7280;font-size:13px;font-weight:600;">Current Systems:</td>
-                  <td style="padding:8px 0;color:#111827;font-size:14px;">${escapeHtml(lead.systems || "None provided")}</td>
-                </tr>
-                <tr>
-                  <td style="padding:8px 0;vertical-align:top;color:#6B7280;font-size:13px;font-weight:600;">Focus Areas:</td>
+                  <td style="padding:8px 0;vertical-align:top;color:#6B7280;font-size:13px;font-weight:600;">Where should we look first?:</td>
                   <td style="padding:8px 0;">
                     ${focusPills}
                   </td>
+                </tr>
+                <tr>
+                  <td style="padding:8px 0;color:#6B7280;font-size:13px;font-weight:600;">Systems you run today:</td>
+                  <td style="padding:8px 0;color:#111827;font-size:14px;font-weight:600;">${escapeHtml(lead.systems || "None provided")}</td>
                 </tr>
               </table>
             </td>
@@ -192,15 +192,15 @@ function escapeHtml(str: string): string {
 }
 
 /**
- * Send email notification to meghna@mccollinsmedia.com
+ * Send email notification to sahad@mccollinsmedia.com
  */
 export async function sendLeadNotificationEmail(lead: LeadPayload): Promise<EmailResult> {
   const recipient = (process.env.LEAD_NOTIFICATION_EMAIL || "").trim();
   const recipientList = recipient
     ? recipient
-        .split(",")
-        .map((r) => r.trim())
-        .filter(Boolean)
+      .split(",")
+      .map((r) => r.trim())
+      .filter(Boolean)
     : [];
 
   if (recipientList.length === 0) {

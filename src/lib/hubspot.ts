@@ -38,8 +38,19 @@ export async function pushToHubspot(lead: LeadPayload): Promise<HubspotResult> {
   const webhookUrl = process.env.HUBSPOT_WEBHOOK_URL;
 
   const { firstName, lastName } = splitName(lead.name);
-  const focusAreas = Array.isArray(lead.focus) ? lead.focus.join(", ") : String(lead.focus || "");
-  const noteContent = `Source: ${lead.source || "Beacon AI Form"}\nFocus Areas: ${focusAreas}\nCurrent Systems: ${lead.systems || "None specified"}\nTeam Size: ${lead.size}\nSubmitted: ${lead.submittedAt || new Date().toISOString()}`;
+  const focusAreas =
+    Array.isArray(lead.focus) && lead.focus.length > 0
+      ? lead.focus.join(", ")
+      : "None specified";
+
+  const noteContent = [
+    `Your Role: ${lead.role || "Not specified"}`,
+    `Team Size: ${lead.size || "Not specified"}`,
+    `Where should we look first?: ${focusAreas}`,
+    `Systems you run today: ${lead.systems || "None specified"}`,
+    `Lead Source: ${lead.source || "Beacon AI Form"}`,
+    `Submitted At: ${lead.submittedAt || new Date().toISOString()}`,
+  ].join("\n");
 
   // Method 1: HubSpot CRM Contacts API v3 (Recommended if private token provided)
   if (accessToken) {
