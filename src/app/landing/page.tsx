@@ -47,6 +47,7 @@ export default function LandingPage() {
     systems: "",
   });
   const [formErrors, setFormErrors] = useState<Record<string, string>>({});
+  const [formSubmitError, setFormSubmitError] = useState<string | null>(null);
 
   const containerRef = useRef<HTMLDivElement>(null);
   const formStepRef = useRef<HTMLDivElement>(null);
@@ -338,10 +339,36 @@ export default function LandingPage() {
     if (!validateStep2()) return;
 
     setFormSubmitting(true);
-    // Simulate webhook POST / Hubspot push
-    await new Promise((resolve) => setTimeout(resolve, 600));
-    setFormSubmitting(false);
-    setFormSubmitted(true);
+    setFormSubmitError(null);
+
+    try {
+      const res = await fetch("/api/contact", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          ...formData,
+          source: "Landing Page Audit Form",
+        }),
+      });
+
+      const data = await res.json().catch(() => null);
+
+      if (!res.ok || !data?.success) {
+        throw new Error(
+          data?.message || "Something went wrong while submitting. Please try again."
+        );
+      }
+
+      setFormSubmitted(true);
+    } catch (err: unknown) {
+      const msg =
+        err instanceof Error
+          ? err.message
+          : "Failed to submit. Please try again or reach out to hello@beacon.ai";
+      setFormSubmitError(msg);
+    } finally {
+      setFormSubmitting(false);
+    }
   };
 
   const firstName = formData.name.trim().split(" ")[0] || "there";
@@ -1028,6 +1055,23 @@ export default function LandingPage() {
                         }
                       />
                     </div>
+
+                    {formSubmitError && (
+                      <div
+                        style={{
+                          backgroundColor: "rgba(239, 68, 68, 0.1)",
+                          border: "1px solid rgba(239, 68, 68, 0.3)",
+                          color: "#F87171",
+                          padding: "10px 14px",
+                          borderRadius: "8px",
+                          fontSize: "0.85rem",
+                          lineHeight: 1.4,
+                          marginBottom: "12px",
+                        }}
+                      >
+                        {formSubmitError}
+                      </div>
+                    )}
 
                     <div
                       style={{

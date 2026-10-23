@@ -232,6 +232,7 @@ export default function Home() {
     systems: "",
   });
   const [formErrors, setFormErrors] = useState<Record<string, string>>({});
+  const [formSubmitError, setFormSubmitError] = useState<string | null>(null);
 
   const mainRef = useRef<HTMLDivElement>(null);
   const svcRef = useRef<HTMLDivElement>(null);
@@ -669,10 +670,36 @@ export default function Home() {
     if (!validateStep2()) return;
 
     setFormSubmitting(true);
-    // Simulate CRM submission
-    await new Promise((r) => setTimeout(r, 600));
-    setFormSubmitting(false);
-    setFormSubmitted(true);
+    setFormSubmitError(null);
+
+    try {
+      const res = await fetch("/api/contact", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          ...formData,
+          source: "Homepage Audit Form",
+        }),
+      });
+
+      const data = await res.json().catch(() => null);
+
+      if (!res.ok || !data?.success) {
+        throw new Error(
+          data?.message || "Something went wrong while submitting. Please try again."
+        );
+      }
+
+      setFormSubmitted(true);
+    } catch (err: unknown) {
+      const msg =
+        err instanceof Error
+          ? err.message
+          : "Failed to submit. Please try again or reach out to hello@beacon.ai";
+      setFormSubmitError(msg);
+    } finally {
+      setFormSubmitting(false);
+    }
   };
 
   const currentFn = FUNCTIONS_DATA.find((f) => f.id === activeTab) || FUNCTIONS_DATA[0];
@@ -1549,6 +1576,22 @@ export default function Home() {
                       />
                     </div>
 
+                    {formSubmitError && (
+                      <div
+                        style={{
+                          backgroundColor: "rgba(239, 68, 68, 0.1)",
+                          border: "1px solid rgba(239, 68, 68, 0.3)",
+                          color: "#F87171",
+                          padding: "10px 14px",
+                          borderRadius: "8px",
+                          fontSize: "0.85rem",
+                          lineHeight: 1.4,
+                        }}
+                      >
+                        {formSubmitError}
+                      </div>
+                    )}
+
                     <div style={{ display: "flex", gap: "10px", flexWrap: "wrap" }}>
                       <button
                         type="button"
@@ -1599,17 +1642,19 @@ export default function Home() {
       {/* Section (09): Questions / FAQ */}
       <section className="sec" id="faq">
         <div className="wrap split">
-          <div>
-            <p className="tag"><b>(09)</b> Questions</p>
-            <h2 className="h-lg">
-              Before you <span className="it">book a call.</span>
-            </h2>
-            <p className="lede" style={{ marginTop: "24px" }}>
-              Still unsure? Send us your question and a Beacon lead will answer it directly.
-            </p>
-            <a className="btn btn-ink" href="#contact" style={{ marginTop: "16px" }}>
-              Ask us directly
-            </a>
+          <div className="faq-left">
+            <div className="faq-sticky">
+              <p className="tag"><b>(09)</b> Questions</p>
+              <h2 className="h-lg">
+                Before you <span className="it">book a call.</span>
+              </h2>
+              <p className="lede" style={{ marginTop: "24px" }}>
+                Still unsure? Send us your question and a Beacon lead will answer it directly.
+              </p>
+              <a className="btn btn-ink" href="#contact" style={{ marginTop: "16px" }}>
+                Ask us directly
+              </a>
+            </div>
           </div>
 
           <div className="faq">

@@ -616,6 +616,32 @@ button {
   line-height: 1.6;
 }
 
+/* FAQ Section Pinning */
+#faq .split {
+  align-items: stretch;
+}
+
+.faq-left {
+  position: relative;
+  min-width: 0;
+  height: 100%;
+}
+
+@media (min-width: 901px) {
+  .faq-sticky {
+    position: -webkit-sticky;
+    position: sticky;
+    top: 96px;
+    align-self: start;
+  }
+}
+
+@media (max-width: 900px) {
+  .faq-sticky {
+    position: static;
+  }
+}
+
 /* Footer */
 .foot {
   background: var(--ink);
