@@ -469,10 +469,10 @@ export default function Home() {
 
       // 13. Next steps ordered list in Where to Start
       gsap.fromTo(
-        ".next li",
+        ".next-step-item",
         { opacity: 0, x: -30 },
         {
-          opacity: 1,
+          opacity: 0.75,
           x: 0,
           duration: 0.65,
           stagger: 0.12,
@@ -483,6 +483,20 @@ export default function Home() {
           },
         }
       );
+
+      // Desktop Step Highlight Sync as left side scrolls past pinned form
+      const mm = gsap.matchMedia();
+      mm.add("(min-width: 981px)", () => {
+        const steps = gsap.utils.toArray<HTMLElement>(".next-step-item");
+        steps.forEach((step) => {
+          ScrollTrigger.create({
+            trigger: step,
+            start: "top 62%",
+            end: "bottom 32%",
+            toggleClass: { targets: step, className: "active" },
+          });
+        });
+      });
 
       // 14. Contact formcard entrance
       gsap.fromTo(
@@ -495,7 +509,7 @@ export default function Home() {
           duration: 0.8,
           ease: "power3.out",
           scrollTrigger: {
-            trigger: "#contact .formcard",
+            trigger: "#contact",
             start: "top 85%",
           },
         }
@@ -1333,7 +1347,7 @@ export default function Home() {
       {/* Section (08): Where to Start & Form */}
       <section className="sec dark" id="contact">
         <div className="wrap contact">
-          <div>
+          <div className="contact-left">
             <p className="tag"><b>(08)</b> Where to start</p>
             <h2 className="h-lg">
               See the business first. <span className="it">Then make it leaner.</span>
@@ -1344,28 +1358,73 @@ export default function Home() {
             </p>
 
             <ol className="next">
-              <li>
+              <li className="next-step-item">
                 <span className="num">01</span>
                 <div>
+                  <div className="step-tag">Weeks 1 to 3 · Fixed fee</div>
                   <b>Business audit</b>
-                  <span>Three weeks to map your data and processes and put a number on the opportunity.</span>
+                  <p>
+                    Three weeks to map your data and processes, baseline current costs in
+                    hours and AED, and deliver a ranked list of savings with build cost
+                    and payback for each.
+                  </p>
+                  <ul className="step-deliverables">
+                    <li>Systems &amp; data map across every department</li>
+                    <li>Time and cost baseline for priority workflows</li>
+                    <li>Ranked opportunity roadmap with ROI models</li>
+                  </ul>
                 </div>
               </li>
-              <li>
+              <li className="next-step-item">
                 <span className="num">02</span>
                 <div>
+                  <div className="step-tag">Weeks 4 to 6 · Executive view</div>
                   <b>Command centre</b>
-                  <span>Leadership gets one live view of the organisation within weeks, not quarters.</span>
+                  <p>
+                    Leadership gets one live view of the organisation within weeks, not
+                    quarters. Revenue, margin, cash position, and automated daily briefs
+                    across every function.
+                  </p>
+                  <ul className="step-deliverables">
+                    <li>Unified C-suite live operational dashboard</li>
+                    <li>Daily leadership brief: risks, wins &amp; action items</li>
+                    <li>Natural language queries in English &amp; Arabic</li>
+                  </ul>
                 </div>
               </li>
-              <li>
+              <li className="next-step-item">
                 <span className="num">03</span>
                 <div>
+                  <div className="step-tag">Quarter by quarter · Continuous return</div>
                   <b>Function by function</b>
-                  <span>We transform the highest-return department first, then roll out quarter by quarter.</span>
+                  <p>
+                    We transform the highest-return department first (Finance, Sales, Ops,
+                    or HR), then roll out quarter by quarter. Every build is tied to your
+                    P&amp;L.
+                  </p>
+                  <ul className="step-deliverables">
+                    <li>End-to-end workflow automation inside your tools</li>
+                    <li>Human approval checkpoints where they matter</li>
+                    <li>Monthly savings tracking against baseline</li>
+                  </ul>
                 </div>
               </li>
             </ol>
+
+            <div className="contact-trust">
+              <div>
+                <b>Fixed fee upfront</b>
+                <span>Agreed before kickoff, no surprises</span>
+              </div>
+              <div>
+                <b>NDA from day one</b>
+                <span>Your data stays private &amp; secure</span>
+              </div>
+              <div>
+                <b>You own everything</b>
+                <span>Stack, playbooks &amp; roadmap yours to keep</span>
+              </div>
+            </div>
 
             <div className="reach">
               <a
@@ -1382,7 +1441,8 @@ export default function Home() {
             </div>
           </div>
 
-          <div className="formcard">
+          <div className="contact-right">
+            <div className="formcard">
             {!formSubmitted ? (
               <form id="home-form" className="form" onSubmit={handleFormSubmit} noValidate>
                 <div className="steps-ind">
@@ -1590,6 +1650,7 @@ export default function Home() {
                 </ol>
               </div>
             )}
+            </div>
           </div>
         </div>
       </section>
