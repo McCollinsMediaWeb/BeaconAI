@@ -712,12 +712,12 @@ export default function Home() {
         <div className="wrap">
           <Link href="#top" className="logo" aria-label="Beacon AI home">
             <Image
-              src="/assets/logo.png"
+              src="/logo-new-tr.png"
               alt="Beacon AI"
-              width={123}
-              height={22}
+              width={200}
+              height={42}
               priority
-              style={{ height: "22px", width: "auto" }}
+              style={{ height: "52px", width: "auto" }}
             />
           </Link>
           <ul>
@@ -1411,229 +1411,229 @@ export default function Home() {
 
           <div className="contact-right">
             <div className="formcard">
-            {!formSubmitted ? (
-              <form id="home-form" className="form" onSubmit={handleFormSubmit} noValidate>
-                <div className="steps-ind">
-                  <span>Step {formStep + 1} of 2</span>
-                  <i className={formStep >= 0 ? "on" : ""}></i>
-                  <i className={formStep >= 1 ? "on" : ""}></i>
-                </div>
-
-                {/* Step 1 */}
-                {formStep === 0 && (
-                  <div ref={formStepRef} className="form">
-                    <div className="row">
-                      <div className={`field ${formErrors.name ? "bad" : ""}`}>
-                        <label htmlFor="home-form-name">Full name</label>
-                        <input
-                          id="home-form-name"
-                          name="name"
-                          autoComplete="name"
-                          placeholder="Ahmed Al Mansoori"
-                          value={formData.name}
-                          onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                        />
-                        {formErrors.name && <span className="err">{formErrors.name}</span>}
-                      </div>
-
-                      <div className={`field ${formErrors.email ? "bad" : ""}`}>
-                        <label htmlFor="home-form-email">Work email</label>
-                        <input
-                          id="home-form-email"
-                          name="email"
-                          type="email"
-                          autoComplete="email"
-                          placeholder="ahmed@company.ae"
-                          value={formData.email}
-                          onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-                        />
-                        {formErrors.email && <span className="err">{formErrors.email}</span>}
-                      </div>
-                    </div>
-
-                    <div className="row">
-                      <div className={`field ${formErrors.phone ? "bad" : ""}`}>
-                        <label htmlFor="home-form-phone">Mobile / WhatsApp</label>
-                        <input
-                          id="home-form-phone"
-                          name="phone"
-                          type="tel"
-                          autoComplete="tel"
-                          placeholder="+971 50 000 0000"
-                          value={formData.phone}
-                          onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
-                        />
-                        {formErrors.phone && <span className="err">{formErrors.phone}</span>}
-                      </div>
-
-                      <div className={`field ${formErrors.company ? "bad" : ""}`}>
-                        <label htmlFor="home-form-company">Company</label>
-                        <input
-                          id="home-form-company"
-                          name="company"
-                          autoComplete="organization"
-                          placeholder="Company name"
-                          value={formData.company}
-                          onChange={(e) => setFormData({ ...formData, company: e.target.value })}
-                        />
-                        {formErrors.company && <span className="err">{formErrors.company}</span>}
-                      </div>
-                    </div>
-
-                    <button type="button" className="btn btn-accent" onClick={handleNextStep}>
-                      Continue{" "}
-                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                        <path d="M5 12h14M13 6l6 6-6 6" />
-                      </svg>
-                    </button>
-                    <p className="consent">
-                      Takes 40 seconds. No sales sequence, just one call with a Beacon lead.
-                    </p>
+              {!formSubmitted ? (
+                <form id="home-form" className="form" onSubmit={handleFormSubmit} noValidate>
+                  <div className="steps-ind">
+                    <span>Step {formStep + 1} of 2</span>
+                    <i className={formStep >= 0 ? "on" : ""}></i>
+                    <i className={formStep >= 1 ? "on" : ""}></i>
                   </div>
-                )}
 
-                {/* Step 2 */}
-                {formStep === 1 && (
-                  <div ref={formStepRef} className="form">
-                    <div className="row">
-                      <div className={`field ${formErrors.role ? "bad" : ""}`}>
-                        <label htmlFor="home-form-role">Your role</label>
-                        <select
-                          id="home-form-role"
-                          name="role"
-                          value={formData.role}
-                          onChange={(e) => setFormData({ ...formData, role: e.target.value })}
-                        >
-                          <option value="">Select</option>
-                          <option>Founder / CEO / MD</option>
-                          <option>CFO / Finance</option>
-                          <option>COO / Operations</option>
-                          <option>Sales or marketing head</option>
-                          <option>IT / Digital</option>
-                          <option>Other</option>
-                        </select>
-                        {formErrors.role && <span className="err">{formErrors.role}</span>}
+                  {/* Step 1 */}
+                  {formStep === 0 && (
+                    <div ref={formStepRef} className="form">
+                      <div className="row">
+                        <div className={`field ${formErrors.name ? "bad" : ""}`}>
+                          <label htmlFor="home-form-name">Full name</label>
+                          <input
+                            id="home-form-name"
+                            name="name"
+                            autoComplete="name"
+                            placeholder="Ahmed Al Mansoori"
+                            value={formData.name}
+                            onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+                          />
+                          {formErrors.name && <span className="err">{formErrors.name}</span>}
+                        </div>
+
+                        <div className={`field ${formErrors.email ? "bad" : ""}`}>
+                          <label htmlFor="home-form-email">Work email</label>
+                          <input
+                            id="home-form-email"
+                            name="email"
+                            type="email"
+                            autoComplete="email"
+                            placeholder="ahmed@company.ae"
+                            value={formData.email}
+                            onChange={(e) => setFormData({ ...formData, email: e.target.value })}
+                          />
+                          {formErrors.email && <span className="err">{formErrors.email}</span>}
+                        </div>
                       </div>
 
-                      <div className={`field ${formErrors.size ? "bad" : ""}`}>
-                        <label htmlFor="home-form-size">Team size</label>
-                        <select
-                          id="home-form-size"
-                          name="size"
-                          value={formData.size}
-                          onChange={(e) => setFormData({ ...formData, size: e.target.value })}
-                        >
-                          <option value="">Select</option>
-                          <option>1–25</option>
-                          <option>26–100</option>
-                          <option>101–250</option>
-                          <option>251–1,000</option>
-                          <option>1,000+</option>
-                        </select>
-                        {formErrors.size && <span className="err">{formErrors.size}</span>}
+                      <div className="row">
+                        <div className={`field ${formErrors.phone ? "bad" : ""}`}>
+                          <label htmlFor="home-form-phone">Mobile / WhatsApp</label>
+                          <input
+                            id="home-form-phone"
+                            name="phone"
+                            type="tel"
+                            autoComplete="tel"
+                            placeholder="+971 50 000 0000"
+                            value={formData.phone}
+                            onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
+                          />
+                          {formErrors.phone && <span className="err">{formErrors.phone}</span>}
+                        </div>
+
+                        <div className={`field ${formErrors.company ? "bad" : ""}`}>
+                          <label htmlFor="home-form-company">Company</label>
+                          <input
+                            id="home-form-company"
+                            name="company"
+                            autoComplete="organization"
+                            placeholder="Company name"
+                            value={formData.company}
+                            onChange={(e) => setFormData({ ...formData, company: e.target.value })}
+                          />
+                          {formErrors.company && <span className="err">{formErrors.company}</span>}
+                        </div>
                       </div>
-                    </div>
 
-                    <div className="field">
-                      <label>Where should we look first?</label>
-                      <div className="chips">
-                        {FOCUS_OPTIONS.map((opt) => (
-                          <label key={opt.value} className="chip">
-                            <input
-                              type="checkbox"
-                              name="focus"
-                              value={opt.value}
-                              checked={formData.focus.includes(opt.value)}
-                              onChange={(e) => {
-                                const val = e.target.value;
-                                setFormData((prev) => ({
-                                  ...prev,
-                                  focus: e.target.checked
-                                    ? [...prev.focus, val]
-                                    : prev.focus.filter((x) => x !== val),
-                                }));
-                              }}
-                            />
-                            <span>{opt.label}</span>
-                          </label>
-                        ))}
-                      </div>
-                    </div>
-
-                    <div className="field">
-                      <label htmlFor="home-form-systems">
-                        Systems you run today{" "}
-                        <span style={{ textTransform: "none", letterSpacing: 0, fontWeight: 400 }}>
-                          (optional)
-                        </span>
-                      </label>
-                      <input
-                        id="home-form-systems"
-                        name="systems"
-                        placeholder="e.g. Zoho, Odoo, SAP B1, Tally, Shopify, Excel"
-                        value={formData.systems}
-                        onChange={(e) => setFormData({ ...formData, systems: e.target.value })}
-                      />
-                    </div>
-
-                    {formSubmitError && (
-                      <div
-                        style={{
-                          backgroundColor: "rgba(239, 68, 68, 0.1)",
-                          border: "1px solid rgba(239, 68, 68, 0.3)",
-                          color: "#F87171",
-                          padding: "10px 14px",
-                          borderRadius: "8px",
-                          fontSize: "0.85rem",
-                          lineHeight: 1.4,
-                        }}
-                      >
-                        {formSubmitError}
-                      </div>
-                    )}
-
-                    <div style={{ display: "flex", gap: "10px", flexWrap: "wrap" }}>
-                      <button
-                        type="button"
-                        className="btn btn-ghost"
-                        onClick={() => setFormStep(0)}
-                      >
-                        Back
+                      <button type="button" className="btn btn-accent" onClick={handleNextStep}>
+                        Continue{" "}
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                          <path d="M5 12h14M13 6l6 6-6 6" />
+                        </svg>
                       </button>
-                      <button
-                        type="submit"
-                        className="btn btn-accent"
-                        style={{ flex: 1 }}
-                        disabled={formSubmitting}
-                      >
-                        {formSubmitting ? "Sending…" : "Book my audit call"}
-                      </button>
+                      <p className="consent">
+                        Takes 40 seconds. No sales sequence, just one call with a Beacon lead.
+                      </p>
                     </div>
+                  )}
 
-                    <p className="consent">
-                      We use your details only to contact you about Beacon. Your data stays private.
-                    </p>
+                  {/* Step 2 */}
+                  {formStep === 1 && (
+                    <div ref={formStepRef} className="form">
+                      <div className="row">
+                        <div className={`field ${formErrors.role ? "bad" : ""}`}>
+                          <label htmlFor="home-form-role">Your role</label>
+                          <select
+                            id="home-form-role"
+                            name="role"
+                            value={formData.role}
+                            onChange={(e) => setFormData({ ...formData, role: e.target.value })}
+                          >
+                            <option value="">Select</option>
+                            <option>Founder / CEO / MD</option>
+                            <option>CFO / Finance</option>
+                            <option>COO / Operations</option>
+                            <option>Sales or marketing head</option>
+                            <option>IT / Digital</option>
+                            <option>Other</option>
+                          </select>
+                          {formErrors.role && <span className="err">{formErrors.role}</span>}
+                        </div>
+
+                        <div className={`field ${formErrors.size ? "bad" : ""}`}>
+                          <label htmlFor="home-form-size">Team size</label>
+                          <select
+                            id="home-form-size"
+                            name="size"
+                            value={formData.size}
+                            onChange={(e) => setFormData({ ...formData, size: e.target.value })}
+                          >
+                            <option value="">Select</option>
+                            <option>1–25</option>
+                            <option>26–100</option>
+                            <option>101–250</option>
+                            <option>251–1,000</option>
+                            <option>1,000+</option>
+                          </select>
+                          {formErrors.size && <span className="err">{formErrors.size}</span>}
+                        </div>
+                      </div>
+
+                      <div className="field">
+                        <label>Where should we look first?</label>
+                        <div className="chips">
+                          {FOCUS_OPTIONS.map((opt) => (
+                            <label key={opt.value} className="chip">
+                              <input
+                                type="checkbox"
+                                name="focus"
+                                value={opt.value}
+                                checked={formData.focus.includes(opt.value)}
+                                onChange={(e) => {
+                                  const val = e.target.value;
+                                  setFormData((prev) => ({
+                                    ...prev,
+                                    focus: e.target.checked
+                                      ? [...prev.focus, val]
+                                      : prev.focus.filter((x) => x !== val),
+                                  }));
+                                }}
+                              />
+                              <span>{opt.label}</span>
+                            </label>
+                          ))}
+                        </div>
+                      </div>
+
+                      <div className="field">
+                        <label htmlFor="home-form-systems">
+                          Systems you run today{" "}
+                          <span style={{ textTransform: "none", letterSpacing: 0, fontWeight: 400 }}>
+                            (optional)
+                          </span>
+                        </label>
+                        <input
+                          id="home-form-systems"
+                          name="systems"
+                          placeholder="e.g. Zoho, Odoo, SAP B1, Tally, Shopify, Excel"
+                          value={formData.systems}
+                          onChange={(e) => setFormData({ ...formData, systems: e.target.value })}
+                        />
+                      </div>
+
+                      {formSubmitError && (
+                        <div
+                          style={{
+                            backgroundColor: "rgba(239, 68, 68, 0.1)",
+                            border: "1px solid rgba(239, 68, 68, 0.3)",
+                            color: "#F87171",
+                            padding: "10px 14px",
+                            borderRadius: "8px",
+                            fontSize: "0.85rem",
+                            lineHeight: 1.4,
+                          }}
+                        >
+                          {formSubmitError}
+                        </div>
+                      )}
+
+                      <div style={{ display: "flex", gap: "10px", flexWrap: "wrap" }}>
+                        <button
+                          type="button"
+                          className="btn btn-ghost"
+                          onClick={() => setFormStep(0)}
+                        >
+                          Back
+                        </button>
+                        <button
+                          type="submit"
+                          className="btn btn-accent"
+                          style={{ flex: 1 }}
+                          disabled={formSubmitting}
+                        >
+                          {formSubmitting ? "Sending…" : "Book my audit call"}
+                        </button>
+                      </div>
+
+                      <p className="consent">
+                        We use your details only to contact you about Beacon. Your data stays private.
+                      </p>
+                    </div>
+                  )}
+                </form>
+              ) : (
+                <div className="success">
+                  <div className="tick">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
+                      <path d="M5 12.5l4.5 4.5L19 7.5" />
+                    </svg>
                   </div>
-                )}
-              </form>
-            ) : (
-              <div className="success">
-                <div className="tick">
-                  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
-                    <path d="M5 12.5l4.5 4.5L19 7.5" />
-                  </svg>
+                  <h3 className="h-md">
+                    Thanks, <span>{formData.name.split(" ")[0] || "there"}</span>.{" "}
+                    <span className="it">We have it.</span>
+                  </h3>
+                  <ol>
+                    <li>A Beacon lead reviews your answers within one working day.</li>
+                    <li>We call or WhatsApp you to book a 30-minute discovery call.</li>
+                    <li>If there is a fit, you get a fixed-fee audit proposal in writing.</li>
+                  </ol>
                 </div>
-                <h3 className="h-md">
-                  Thanks, <span>{formData.name.split(" ")[0] || "there"}</span>.{" "}
-                  <span className="it">We have it.</span>
-                </h3>
-                <ol>
-                  <li>A Beacon lead reviews your answers within one working day.</li>
-                  <li>We call or WhatsApp you to book a 30-minute discovery call.</li>
-                  <li>If there is a fit, you get a fixed-fee audit proposal in writing.</li>
-                </ol>
-              </div>
-            )}
+              )}
             </div>
           </div>
         </div>
