@@ -221,25 +221,26 @@ export async function sendLeadNotificationEmail(lead: LeadPayload): Promise<Emai
     };
   }
 
-  const fromEmail = process.env.SMTP_FROM || process.env.RESEND_FROM || '"Beacon AI" <leads@beacon.ai>';
+  const smtpHost = process.env.SMTP_HOST || "smtp.gmail.com";
+  const smtpPort = Number(process.env.SMTP_PORT || 465);
+  const smtpSecure = process.env.SMTP_SECURE !== "false" && (process.env.SMTP_SECURE === "true" || smtpPort === 465);
+  const smtpUser = process.env.SMTP_USER || "developer@mccollinsmedia.com";
+  const smtpPass = process.env.SMTP_PASS;
+  const fromEmail = process.env.SMTP_FROM || `"Beacon AI Leads" <${smtpUser}>`;
   const subject = `🔥 New Beacon AI Lead: ${lead.company} — ${lead.name}`;
   const htmlContent = renderLeadEmailHtml(lead);
 
-  // 1. Check if SMTP configuration is present
-  const smtpHost = process.env.SMTP_HOST;
-  const smtpUser = process.env.SMTP_USER;
-  const smtpPass = process.env.SMTP_PASS;
-
-  if (smtpHost && (smtpUser || process.env.SMTP_PORT)) {
+  // Send email via Nodemailer if SMTP App Password is provided
+  if (smtpPass) {
     try {
-      const port = Number(process.env.SMTP_PORT || 587);
-      const secure = process.env.SMTP_SECURE === "true" || port === 465;
-
       const transporter = nodemailer.createTransport({
         host: smtpHost,
-        port,
-        secure,
-        auth: smtpUser ? { user: smtpUser, pass: smtpPass || "" } : undefined,
+        port: smtpPort,
+        secure: smtpSecure,
+        auth: {
+          user: smtpUser,
+          pass: smtpPass,
+        },
       });
 
       const info = await transporter.sendMail({
@@ -268,50 +269,12 @@ export async function sendLeadNotificationEmail(lead: LeadPayload): Promise<Emai
     }
   }
 
-  // 2. Check if Resend API key is present
-  const resendApiKey = process.env.RESEND_API_KEY;
-  if (resendApiKey) {
-    try {
-      const res = await fetch("https://api.resend.com/emails", {
-        method: "POST",
-        headers: {
-          Authorization: `Bearer ${resendApiKey}`,
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          from: fromEmail,
-          to: recipientList,
-          reply_to: lead.email,
-          subject,
-          html: htmlContent,
-        }),
-      });
-
-      const data = await res.json().catch(() => ({}));
-      if (!res.ok) {
-        const errorMsg = data?.message || `Resend API error: ${res.statusText}`;
-        console.error("[Resend API Error]:", data);
-        return { success: false, method: "RESEND", recipient, error: errorMsg };
-      }
-
-      return {
-        success: true,
-        method: "RESEND",
-        recipient,
-        messageId: data?.id,
-      };
-    } catch (err: unknown) {
-      const errorStr = err instanceof Error ? err.message : String(err);
-      console.error("[Resend Exception]:", errorStr);
-      return { success: false, method: "RESEND", recipient, error: errorStr };
-    }
-  }
-
-  // 3. Fallback / Dev Mode when no mail credentials are configured yet
+  // Fallback when SMTP_PASS (App Password) is not set yet in environment
   console.warn(
-    `[Email Notice] Neither SMTP (SMTP_HOST/SMTP_USER) nor RESEND_API_KEY is configured. Notification intended for ${recipient} was logged:`,
+    `[Email Notice] SMTP_PASS (App Password) for ${smtpUser} is not configured in .env.local. Notification logged locally:`,
     {
       to: recipient,
+      from: fromEmail,
       subject,
       replyTo: lead.email,
       lead: {
@@ -329,6 +292,6 @@ export async function sendLeadNotificationEmail(lead: LeadPayload): Promise<Emai
     success: true,
     method: "DEV_MOCK",
     recipient,
-    error: "No SMTP or Resend credentials configured. Logged to console.",
+    error: "SMTP_PASS not configured. Logged to console.",
   };
 }
