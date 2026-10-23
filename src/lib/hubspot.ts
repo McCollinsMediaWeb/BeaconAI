@@ -125,38 +125,55 @@ export async function pushToHubspot(lead: LeadPayload): Promise<HubspotResult> {
   // Method 2: HubSpot Forms API v3 (Submissions API - Portal + Form ID)
   if (portalId && formId) {
     try {
-      const host = region === "eu1" ? "api-eu1.hsforms.com" : "api.hsforms.com";
+      const isEu =
+        !region ||
+        region.toLowerCase() === "eu1" ||
+        portalId === "149302624" ||
+        portalId.startsWith("149");
+      const host = isEu ? "api-eu1.hsforms.com" : "api.hsforms.com";
       const url = `https://${host}/submissions/v3/integration/submit/${portalId}/${formId}`;
+
+      const fields = [
+        { name: "firstname", value: firstName },
+        { name: "lastname", value: lastName },
+        { name: "email", value: lead.email },
+        { name: "phone", value: lead.phone },
+        { name: "company", value: lead.company },
+        { name: "jobtitle", value: lead.role },
+        { name: "message", value: noteContent },
+      ];
+
+      const payload = {
+        submittedAt: Date.now(),
+        fields,
+        context: {
+          pageUri: "https://beacon.ai",
+          pageName: `Beacon AI - ${lead.source || "Website Form"}`,
+        },
+        legalConsentOptions: {
+          consent: {
+            consentToProcess: true,
+            text: "I agree to allow Beacon AI to store and process my personal data.",
+          },
+        },
+      };
+
       const response = await fetch(url, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({
-          fields: [
-            { objectTypeId: "0-1", name: "firstname", value: firstName },
-            { objectTypeId: "0-1", name: "lastname", value: lastName },
-            { objectTypeId: "0-1", name: "email", value: lead.email },
-            { objectTypeId: "0-1", name: "phone", value: lead.phone },
-            { objectTypeId: "0-1", name: "company", value: lead.company },
-            { objectTypeId: "0-1", name: "jobtitle", value: lead.role },
-            { objectTypeId: "0-1", name: "numemployees", value: lead.size },
-            { objectTypeId: "0-1", name: "message", value: noteContent },
-          ],
-          context: {
-            pageUri: "https://beacon.ai",
-            pageName: `Beacon AI - ${lead.source || "Website Form"}`,
-          },
-        }),
+        body: JSON.stringify(payload),
       });
 
       const data = await response.json().catch(() => ({}));
       if (!response.ok) {
         const errMsg = data?.message || `HubSpot Forms API error: ${response.statusText}`;
-        console.error("[HubSpot Forms API Error]:", data);
+        console.error("[HubSpot Forms API Error]:", data, "Target URL:", url);
         return { success: false, method: "FORMS_API_V3", error: errMsg };
       }
 
+      console.log("[HubSpot Forms API Success] Successfully submitted to:", url);
       return { success: true, method: "FORMS_API_V3", data };
     } catch (err: unknown) {
       const errorStr = err instanceof Error ? err.message : String(err);

@@ -116,6 +116,11 @@ export async function POST(request: Request) {
       },
     };
 
+    console.log("[POST /api/contact Result]:", {
+      hubspot: hubspotData,
+      email: emailData,
+    });
+
     return NextResponse.json(responsePayload, { status: 200 });
   } catch (err: unknown) {
     const errorMsg = err instanceof Error ? err.message : String(err);
