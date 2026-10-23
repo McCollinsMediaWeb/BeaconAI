@@ -24,11 +24,11 @@ export function renderLeadEmailHtml(lead: LeadPayload): string {
   const waLink = cleanPhone.length >= 8 ? `https://wa.me/${cleanPhone}` : null;
   const focusPills = Array.isArray(lead.focus) && lead.focus.length > 0
     ? lead.focus
-        .map(
-          (f) =>
-            `<span style="display:inline-block;background:#F3F4F6;color:#1F2937;padding:5px 12px;border-radius:16px;font-size:12px;font-weight:600;margin:3px 4px 3px 0;">${escapeHtml(f)}</span>`
-        )
-        .join("")
+      .map(
+        (f) =>
+          `<span style="display:inline-block;background:#F3F4F6;color:#1F2937;padding:5px 12px;border-radius:16px;font-size:12px;font-weight:600;margin:3px 4px 3px 0;">${escapeHtml(f)}</span>`
+      )
+      .join("")
     : `<span style="color:#6B7280;font-style:italic;">None specified</span>`;
 
   const dateStr = lead.submittedAt
@@ -96,11 +96,10 @@ export function renderLeadEmailHtml(lead: LeadPayload): string {
                   <td style="padding:8px 0;color:#6B7280;font-size:13px;font-weight:600;">Mobile / WhatsApp:</td>
                   <td style="padding:8px 0;font-size:14px;color:#111827;font-weight:600;">
                     ${escapeHtml(lead.phone)}
-                    ${
-                      waLink
-                        ? `&nbsp;&nbsp;<a href="${waLink}" target="_blank" style="display:inline-block;background:#25D366;color:#FFFFFF;text-decoration:none;padding:2px 8px;border-radius:12px;font-size:11px;font-weight:700;">WhatsApp 💬</a>`
-                        : ""
-                    }
+                    ${waLink
+      ? `&nbsp;&nbsp;<a href="${waLink}" target="_blank" style="display:inline-block;background:#25D366;color:#FFFFFF;text-decoration:none;padding:2px 8px;border-radius:12px;font-size:11px;font-weight:700;">WhatsApp 💬</a>`
+      : ""
+    }
                   </td>
                 </tr>
                 <tr>
@@ -149,11 +148,10 @@ export function renderLeadEmailHtml(lead: LeadPayload): string {
                     <a href="mailto:${escapeHtml(lead.email)}?subject=Re:%20Beacon%20AI%20Audit%20Consultation" style="display:inline-block;background:#FF5722;color:#FFFFFF;text-decoration:none;padding:12px 24px;border-radius:8px;font-size:14px;font-weight:700;text-align:center;">
                       Reply by Email →
                     </a>
-                    ${
-                      waLink
-                        ? `&nbsp;&nbsp;<a href="${waLink}" target="_blank" style="display:inline-block;background:#0D0E12;color:#FFFFFF;text-decoration:none;padding:12px 20px;border-radius:8px;font-size:14px;font-weight:600;border:1px solid #374151;">Open in WhatsApp</a>`
-                        : ""
-                    }
+                    ${waLink
+      ? `&nbsp;&nbsp;<a href="${waLink}" target="_blank" style="display:inline-block;background:#0D0E12;color:#FFFFFF;text-decoration:none;padding:12px 20px;border-radius:8px;font-size:14px;font-weight:600;border:1px solid #374151;">Open in WhatsApp</a>`
+      : ""
+    }
                   </td>
                 </tr>
               </table>
@@ -197,7 +195,13 @@ function escapeHtml(str: string): string {
  * Send email notification to meghna@mccollinsmedia.com
  */
 export async function sendLeadNotificationEmail(lead: LeadPayload): Promise<EmailResult> {
-  const recipient = process.env.LEAD_NOTIFICATION_EMAIL || "meghna@mccollinsmedia.com";
+  const recipient =
+    process.env.LEAD_NOTIFICATION_EMAIL ||
+    "meghna@mccollinsmedia.com, sahad@mccollinsmedia.com";
+  const recipientList = recipient
+    .split(",")
+    .map((r) => r.trim())
+    .filter(Boolean);
   const fromEmail = process.env.SMTP_FROM || process.env.RESEND_FROM || '"Beacon AI" <leads@beacon.ai>';
   const subject = `🔥 New Beacon AI Lead: ${lead.company} — ${lead.name}`;
   const htmlContent = renderLeadEmailHtml(lead);
@@ -257,7 +261,7 @@ export async function sendLeadNotificationEmail(lead: LeadPayload): Promise<Emai
         },
         body: JSON.stringify({
           from: fromEmail,
-          to: [recipient],
+          to: recipientList,
           reply_to: lead.email,
           subject,
           html: htmlContent,

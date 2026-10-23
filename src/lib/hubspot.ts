@@ -28,15 +28,22 @@ function splitName(fullName: string): { firstName: string; lastName: string } {
  */
 export async function pushToHubspot(lead: LeadPayload): Promise<HubspotResult> {
   const accessToken = process.env.HUBSPOT_ACCESS_TOKEN;
-  const portalId = process.env.HUBSPOT_PORTAL_ID || process.env.NEXT_PUBLIC_HUBSPOT_PORTAL_ID;
-  const formId = process.env.HUBSPOT_FORM_ID || process.env.NEXT_PUBLIC_HUBSPOT_FORM_ID;
+  const portalId =
+    process.env.HUBSPOT_PORTAL_ID ||
+    process.env.NEXT_PUBLIC_HUBSPOT_PORTAL_ID ||
+    "149302624";
+  const formId =
+    process.env.HUBSPOT_FORM_ID ||
+    process.env.NEXT_PUBLIC_HUBSPOT_FORM_ID ||
+    "8c5b3426-4fde-4fed-be0e-ebe9fe34c651";
+  const region = process.env.HUBSPOT_REGION || "eu1";
   const webhookUrl = process.env.HUBSPOT_WEBHOOK_URL;
 
   const { firstName, lastName } = splitName(lead.name);
   const focusAreas = Array.isArray(lead.focus) ? lead.focus.join(", ") : String(lead.focus || "");
   const noteContent = `Source: ${lead.source || "Beacon AI Form"}\nFocus Areas: ${focusAreas}\nCurrent Systems: ${lead.systems || "None specified"}\nTeam Size: ${lead.size}\nSubmitted: ${lead.submittedAt || new Date().toISOString()}`;
 
-  // Method 1: HubSpot CRM Contacts API v3 (Recommended)
+  // Method 1: HubSpot CRM Contacts API v3 (Recommended if private token provided)
   if (accessToken) {
     try {
       const response = await fetch("https://api.hubapi.com/crm/v3/objects/contacts", {
@@ -106,10 +113,11 @@ export async function pushToHubspot(lead: LeadPayload): Promise<HubspotResult> {
     }
   }
 
-  // Method 2: HubSpot Forms API v3 (Submissions API)
+  // Method 2: HubSpot Forms API v3 (Submissions API - Portal + Form ID)
   if (portalId && formId) {
     try {
-      const url = `https://api.hsforms.com/submissions/v3/integration/submit/${portalId}/${formId}`;
+      const host = region === "eu1" ? "api-eu1.hsforms.com" : "api.hsforms.com";
+      const url = `https://${host}/submissions/v3/integration/submit/${portalId}/${formId}`;
       const response = await fetch(url, {
         method: "POST",
         headers: {
