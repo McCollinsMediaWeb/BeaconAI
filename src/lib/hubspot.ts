@@ -26,7 +26,15 @@ function splitName(fullName: string): { firstName: string; lastName: string } {
  * 2. Forms API v3 (Portal ID + Form ID)
  * 3. Custom HubSpot Webhook URL
  */
-export async function pushToHubspot(lead: LeadPayload): Promise<HubspotResult> {
+export interface HubspotContext {
+  clientIp?: string;
+  referer?: string;
+}
+
+export async function pushToHubspot(
+  lead: LeadPayload,
+  clientContext?: HubspotContext
+): Promise<HubspotResult> {
   const accessToken = process.env.HUBSPOT_ACCESS_TOKEN;
   const portalId =
     process.env.HUBSPOT_PORTAL_ID ||
@@ -147,8 +155,9 @@ export async function pushToHubspot(lead: LeadPayload): Promise<HubspotResult> {
         submittedAt: Date.now(),
         fields,
         context: {
-          pageUri: "https://beacon.ai",
+          pageUri: clientContext?.referer || "https://beaconai.ae",
           pageName: `Beacon AI - ${lead.source || "Website Form"}`,
+          ipAddress: clientContext?.clientIp,
         },
         legalConsentOptions: {
           consent: {

@@ -69,9 +69,15 @@ export async function POST(request: Request) {
       submittedAt: new Date().toISOString(),
     };
 
+    const forwardedFor = request.headers.get("x-forwarded-for");
+    const clientIp = forwardedFor
+      ? forwardedFor.split(",")[0].trim()
+      : request.headers.get("x-real-ip") || undefined;
+    const referer = request.headers.get("referer") || undefined;
+
     // Execute HubSpot submission and Email notification concurrently
     const [hubspotResult, emailResult] = await Promise.allSettled([
-      pushToHubspot(lead),
+      pushToHubspot(lead, { clientIp, referer }),
       sendLeadNotificationEmail(lead),
     ]);
 
