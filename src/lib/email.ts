@@ -195,13 +195,32 @@ function escapeHtml(str: string): string {
  * Send email notification to meghna@mccollinsmedia.com
  */
 export async function sendLeadNotificationEmail(lead: LeadPayload): Promise<EmailResult> {
-  const recipient =
-    process.env.LEAD_NOTIFICATION_EMAIL ||
-    "meghna@mccollinsmedia.com, sahad@mccollinsmedia.com";
+  const recipient = (process.env.LEAD_NOTIFICATION_EMAIL || "").trim();
   const recipientList = recipient
-    .split(",")
-    .map((r) => r.trim())
-    .filter(Boolean);
+    ? recipient
+        .split(",")
+        .map((r) => r.trim())
+        .filter(Boolean)
+    : [];
+
+  if (recipientList.length === 0) {
+    console.warn(
+      "[Email Notice] LEAD_NOTIFICATION_EMAIL is not set in environment variables. Lead logged locally:",
+      {
+        name: lead.name,
+        company: lead.company,
+        phone: lead.phone,
+        email: lead.email,
+      }
+    );
+    return {
+      success: true,
+      method: "DEV_MOCK",
+      recipient: "not-configured",
+      error: "LEAD_NOTIFICATION_EMAIL not configured.",
+    };
+  }
+
   const fromEmail = process.env.SMTP_FROM || process.env.RESEND_FROM || '"Beacon AI" <leads@beacon.ai>';
   const subject = `🔥 New Beacon AI Lead: ${lead.company} — ${lead.name}`;
   const htmlContent = renderLeadEmailHtml(lead);

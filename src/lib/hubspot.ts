@@ -30,13 +30,11 @@ export async function pushToHubspot(lead: LeadPayload): Promise<HubspotResult> {
   const accessToken = process.env.HUBSPOT_ACCESS_TOKEN;
   const portalId =
     process.env.HUBSPOT_PORTAL_ID ||
-    process.env.NEXT_PUBLIC_HUBSPOT_PORTAL_ID ||
-    "149302624";
+    process.env.NEXT_PUBLIC_HUBSPOT_PORTAL_ID;
   const formId =
     process.env.HUBSPOT_FORM_ID ||
-    process.env.NEXT_PUBLIC_HUBSPOT_FORM_ID ||
-    "8c5b3426-4fde-4fed-be0e-ebe9fe34c651";
-  const region = process.env.HUBSPOT_REGION || "eu1";
+    process.env.NEXT_PUBLIC_HUBSPOT_FORM_ID;
+  const region = process.env.HUBSPOT_REGION;
   const webhookUrl = process.env.HUBSPOT_WEBHOOK_URL;
 
   const { firstName, lastName } = splitName(lead.name);

@@ -93,7 +93,7 @@ export async function POST(request: Request) {
         : {
             success: false,
             method: "UNKNOWN",
-            recipient: "meghna@mccollinsmedia.com",
+            recipient: process.env.LEAD_NOTIFICATION_EMAIL || "not-configured",
             error:
               emailResult.reason instanceof Error
                 ? emailResult.reason.message
